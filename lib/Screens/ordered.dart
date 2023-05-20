@@ -1,6 +1,5 @@
+import 'package:cleaning_service/utils/color.dart';
 import 'package:flutter/material.dart';
-
-import '../navigation/bottom_navigation_bar.dart';
 
 class OrderPlaced extends StatefulWidget {
   const OrderPlaced({Key? key}) : super(key: key);
@@ -22,8 +21,28 @@ class _OrderPlacedState extends State<OrderPlaced> {
               padding: const EdgeInsets.only(top: 12.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
-                child: Image.asset(
-                  "asset/images/girl.png",
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      "asset/images/girl.png",
+                      height: MediaQuery.of(context).size.height * 0.65,
+                      fit: BoxFit.cover,
+                    ),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: cColor.cWhite.withOpacity(0.2),
+                      ),
+                      margin: EdgeInsets.all(5),
+                      padding: EdgeInsets.only(left: 10, top: 5),
+
+                      child: IconButton(onPressed: () {
+                        // Navigator.pop(context);
+                      }, icon: Icon(Icons.arrow_back_ios)),
+                    )
+                  ],
+
                 ),
               ),
             ),
@@ -46,7 +65,6 @@ class _OrderPlacedState extends State<OrderPlaced> {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavigationbarPage(),
     );
   }
 }

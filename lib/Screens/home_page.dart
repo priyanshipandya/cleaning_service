@@ -1,9 +1,7 @@
-import 'package:cleaning_service/Screens/ordered.dart';
-import 'package:cleaning_service/components/cardtile.dart';
+import 'package:cleaning_service/utils/color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import '../navigation/bottom_navigation_bar.dart';
+import 'package:flutter_svg/svg.dart';
+import '../components/cardtile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -48,9 +46,9 @@ class _HomePageState extends State<HomePage> {
                   dense: true,
                   subtitle: DropdownButtonHideUnderline(
                     child: DropdownButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.keyboard_arrow_down_outlined,
-                        color: Colors.orangeAccent,
+                        color: cColor.cOrange,
                       ),
                       isDense: true,
                       hint: const Text(
@@ -68,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   leading: CircleAvatar(
                     radius: 20,
-                    backgroundColor: Colors.orangeAccent,
+                    backgroundColor: cColor.cOrange,
                     child: Image.asset(
                       "asset/images/map.png",
                       height: 25,
@@ -76,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   trailing: CircleAvatar(
                     radius: 20,
-                    backgroundColor: Colors.orangeAccent,
+                    backgroundColor: cColor.cOrange,
                     child: SvgPicture.asset(
                       "asset/vectors/avatar.svg",
                       height: 40,
@@ -106,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                     hintStyle: const TextStyle(
                         fontWeight: FontWeight.w600, color: Colors.black),
                     filled: true,
-                    fillColor: const Color(0xfff3f5f6),
+                    fillColor: cColor.cWhite,
                     suffixIcon: Container(
                       margin: const EdgeInsets.symmetric(vertical: 12),
                       decoration: const BoxDecoration(
@@ -151,11 +149,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    const Text(
+                    Text(
                       "See more",
                       style: TextStyle(
                           fontSize: 15,
-                          color: Colors.orangeAccent,
+                          color: cColor.cOrange,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -165,30 +163,22 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 25,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: const [
-                    SizedBox(
-                      width: 30,
-                    ),
-                    CardTile(),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    CardTile(),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    CardTile(),
-                  ],
+              SizedBox(
+                height: MediaQuery.of(context).size.height*0.35,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => const CardTile(),
+                    itemCount: 3,
+                  ),
                 ),
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigationbarPage(),
     );
   }
 }
