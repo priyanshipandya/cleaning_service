@@ -1,4 +1,5 @@
 import 'package:cleaning_service/utils/color.dart';
+import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class OrderBill extends StatelessWidget {
@@ -7,11 +8,11 @@ class OrderBill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.35,
+        height: Constants.orientation == Constants.isPortrait ? Constants.height * 0.35 : Constants.height * 0.80,
         decoration: BoxDecoration(
-          color: Color(0xfff3f5f7),
+          color: cColor.cWhite,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -19,7 +20,7 @@ class OrderBill extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -32,7 +33,8 @@ class OrderBill extends StatelessWidget {
                       ),
                       Text(
                         "Mon, 10 October",
-                        style: TextStyle(fontSize: 22),
+                        style: TextStyle(
+                            fontSize: 21, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -43,7 +45,8 @@ class OrderBill extends StatelessWidget {
                       ),
                       Text(
                         "11:00 AM",
-                        style: TextStyle(fontSize: 22),
+                        style: TextStyle(
+                            fontSize: 21, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -130,7 +133,14 @@ class OrderBill extends StatelessWidget {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20)),
                           hintText: "Enter promo code(optional)",
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: cColor.cOrange),
+                            borderRadius: BorderRadius.circular(20)
+                            ,
+                          ),
                         ),
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
                       ),
                     ),
                   ],

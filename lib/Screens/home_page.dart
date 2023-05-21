@@ -1,4 +1,6 @@
+import 'package:cleaning_service/utils/card_details.dart';
 import 'package:cleaning_service/utils/color.dart';
+import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../components/cardtile.dart';
@@ -27,8 +29,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,15 +86,30 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 50, left: 35, right: 40),
-                child: Text(
-                  "What services do you need?",
-                  style: TextStyle(
-                    letterSpacing: -1,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w700,
-                  ),
+                child: RichText(
+                  text: TextSpan(
+                      text: "What services do you need?",
+                      style: TextStyle(
+                        color: Colors.black,
+                        letterSpacing: -1,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          child: SizedBox(
+                            width: 10,
+                          ),
+                        ),
+                        WidgetSpan(
+                          child: Image.asset(
+                            "asset/images/design.png",
+                            height: 45,
+                          ),
+                        ),
+                      ]),
                 ),
               ),
               const SizedBox(
@@ -99,6 +118,9 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 17.0),
                 child: TextField(
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
                   decoration: InputDecoration(
                     hintText: "Search Services",
                     hintStyle: const TextStyle(
@@ -137,6 +159,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Image.asset("asset/images/juice.png", height: 22),
                         const Padding(
@@ -164,14 +187,18 @@ class _HomePageState extends State<HomePage> {
                 height: 25,
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height*0.35,
+                height: Constants.orientation == Constants.isPortrait
+                    ? Constants.height * 0.35
+                    : Constants.height * 0.6,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => const CardTile(),
-                    itemCount: 3,
+                    itemBuilder: (context, index) => CardTile(
+                      index: index,
+                    ),
+                    itemCount: CardDetails.cardDetails.length,
                   ),
                 ),
               ),

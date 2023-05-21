@@ -1,4 +1,5 @@
 import 'package:cleaning_service/utils/color.dart';
+import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class SelectableServices extends StatelessWidget {
@@ -16,8 +17,13 @@ class SelectableServices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.20,
-      width: MediaQuery.of(context).size.width,
+      height: Constants.orientation == Constants.isPortrait ? Constants.height * 0.20 : Constants.height * 0.30,
+      constraints: BoxConstraints(
+        minHeight: Constants.orientation == Constants.isPortrait ? Constants.height * 0.20 : Constants.height * 0.50,
+        minWidth: Constants.orientation == Constants.isPortrait ? Constants.width : double.infinity,
+        // maxWidth: double.infinity,
+      ),
+
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0),
         child: ListView.builder(
@@ -54,7 +60,6 @@ class SelectableServices extends StatelessWidget {
                 ],
               ),
             ),
-
           ),
         ),
       ),

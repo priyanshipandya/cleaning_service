@@ -1,4 +1,5 @@
 import 'package:cleaning_service/utils/color.dart';
+import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class OrderPlaced extends StatefulWidget {
@@ -18,14 +19,15 @@ class _OrderPlacedState extends State<OrderPlaced> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 12.0),
+              padding: const EdgeInsets.all(10.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
                 child: Stack(
                   children: [
                     Image.asset(
                       "asset/images/girl.png",
-                      height: MediaQuery.of(context).size.height * 0.65,
+                      height: Constants.orientation == Constants.isPortrait ? Constants.height * 0.65 : Constants.height * 1.8,
+                      width: double.maxFinite,
                       fit: BoxFit.cover,
                     ),
 
@@ -38,7 +40,7 @@ class _OrderPlacedState extends State<OrderPlaced> {
                       padding: EdgeInsets.only(left: 10, top: 5),
 
                       child: IconButton(onPressed: () {
-                        // Navigator.pop(context);
+                        Navigator.pop(context);
                       }, icon: Icon(Icons.arrow_back_ios)),
                     )
                   ],

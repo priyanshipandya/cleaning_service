@@ -2,7 +2,6 @@ import 'package:cleaning_service/components/ordered_bill.dart';
 import 'package:cleaning_service/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../components/selectable_services.dart';
 import 'ordered.dart';
 
@@ -31,41 +30,40 @@ class _PaymentState extends State<Payment> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      ///why dont you use simple ap bar
-      ///summary and pay vache aavi jase me IOS ma
-      ///centerr title false hase to pn ? ofc
-      ///ios ma bydefault j appbar no content vache j aave che -ok
-      child: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          SliverPersistentHeader(
-            delegate: MyPersistentHeaderDelegate(
-              minHeight: 50,
-              maxHeight: 50,
-              child: Container(
-                //su karu e k//git upr upload karyu ?
-                color:  Colors.white.withOpacity(scrolledPixels/50 > 1 ? 1 : scrolledPixels/50),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).maybePop();
-                      },
-                      icon: Icon(Icons.arrow_back_ios),
-                    ),
-                    Text(
-                      "Summary and Pay",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: CustomScrollView(
+          // physics: BouncingScrollPhysics(),
+          controller: scrollController,
+          slivers: [
+            SliverPersistentHeader(
+              delegate: MyPersistentHeaderDelegate(
+                minHeight: 50,
+                maxHeight: 50,
+                child: Container(
+                  color: Colors.white.withOpacity(
+                      scrolledPixels / 50 > 1 ? 1 : scrolledPixels / 50),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).maybePop();
+                        },
+                        icon: Icon(Icons.arrow_back_ios),
+                      ),
+                      Text(
+                        "Summary and Pay",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+              pinned: true,
             ),
-            pinned: true,
-          ),
-          SliverToBoxAdapter(
-            child: Column(
+            SliverToBoxAdapter(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
@@ -73,7 +71,7 @@ class _PaymentState extends State<Payment> {
                         horizontal: 10, vertical: 20),
                     child: Row(children: [
                       CircleAvatar(
-                        radius: 35,
+                        radius: 40,
                         backgroundColor: cColor.cOrange,
                         child: SvgPicture.asset(
                           "asset/vectors/avatar.svg",
@@ -85,19 +83,30 @@ class _PaymentState extends State<Payment> {
                       ),
                       Column(
                         children: [
-                          Text(
-                            "Markus Horizon",
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.w500),
+                          Row(
+                            children: [
+                              Text(
+                                "Markus Horizon",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.w700),
+                              ),
+                              Image.asset(
+                                "asset/icons/verified.png",
+                                height: 27,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8,
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white10),
+                              border: Border.all(color: cColor.cOrange),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 7.0, horizontal: 15),
+                                  vertical: 7.0, horizontal: 12),
                               child: Row(
                                 children: [
                                   Icon(
@@ -145,8 +154,7 @@ class _PaymentState extends State<Payment> {
                   SelectableServices(),
                   OrderBill(),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: FilledButton(
                       style: ButtonStyle(
                         backgroundColor:
@@ -167,13 +175,13 @@ class _PaymentState extends State<Payment> {
                           children: [
                             Text("Place Order"),
                             Container(
-                              padding: EdgeInsets.only(left: 15),
+                              padding: EdgeInsets.only(left: 18),
                               child: Text("\$25.30"),
                               decoration: BoxDecoration(
                                 // color: Colors.red,
                                 border: Border(
                                   left:
-                                      BorderSide(color: Colors.black, width: 2),
+                                      BorderSide(color: Colors.white, width: 1),
                                 ),
                               ),
                             ),
@@ -182,14 +190,11 @@ class _PaymentState extends State<Payment> {
                       ),
                     ),
                   )
-                ]),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 200,
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

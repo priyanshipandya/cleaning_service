@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'home_page.dart';
+import 'inbox.dart';
 
 
 class Index extends StatefulWidget {
@@ -15,7 +16,7 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
-  List pages = [HomePage(), OrderPlaced(), Payment()];
+  List pages = [HomePage(), Inbox(), Payment()];
   int selectedIndex = 0;
 
   @override
