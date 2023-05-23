@@ -3,6 +3,7 @@ import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/inbox_details.dart';
+import 'chat.dart';
 
 class Inbox extends StatefulWidget {
   Inbox({Key? key}) : super(key: key);
@@ -32,14 +33,14 @@ class _InboxState extends State<Inbox> {
                 height: 60,
                 child: Text(
                   "Inbox",
-                  style: TextStyle(fontSize: 25, color: Colors.black),
+                  style: TextStyle(fontSize: 21, color: Colors.black),
                 ),
               ),
               Tab(
                 height: 60,
                 child: Text(
                   "Call",
-                  style: TextStyle(fontSize: 25, color: Colors.black),
+                  style: TextStyle(fontSize: 21, color: Colors.black),
                 ),
               ),
             ]),
@@ -111,15 +112,16 @@ class _InboxState extends State<Inbox> {
                               userDetails[index].name,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             ),
                             subtitle: Text(
                               userDetails[index].msg,
-                              style: TextStyle(fontSize: 17),
+                              style: TextStyle(fontSize: 16),
                             ),
                             trailing: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(userDetails[index].time),
                                 if (userDetails[index].msgNo != null)
@@ -130,6 +132,15 @@ class _InboxState extends State<Inbox> {
                                   ),
                               ],
                             ),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ChatRoom(
+                                      image: userDetails[index].image,
+                                      name: userDetails[index].name),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         ListView.builder(
@@ -146,12 +157,12 @@ class _InboxState extends State<Inbox> {
                               userDetails[index].name,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             ),
                             subtitle: Text(
                               userDetails[index].msg,
-                              style: TextStyle(fontSize: 17),
+                              style: TextStyle(fontSize: 16),
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -205,6 +216,15 @@ class _InboxState extends State<Inbox> {
                                   ),
                               ],
                             ),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ChatRoom(
+                                      image: filterlist[index].image,
+                                      name: filterlist[index].name),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         ListView.builder(
@@ -218,7 +238,7 @@ class _InboxState extends State<Inbox> {
                                   "asset/users/${filterlist[index].image}"),
                             ),
                             title: Text(
-                              userDetails[index].name,
+                              filterlist[index].name,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
