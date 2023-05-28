@@ -12,7 +12,7 @@ class InboxDetails {
 
 
 List<InboxDetails> userDetails = [
-   InboxDetails(image: "user4.jpeg", name: "John Carlos", msg: "When will you be here?", time: "12:40 PM", msgNo: "3"),
+   InboxDetails(image: "user8.jpeg", name: "John Carlos", msg: "When will you be here?", time: "12:40 PM", msgNo: "3"),
    InboxDetails(image: "user1.jpeg", name: "Nicky", msg: "Hey Man!", time: "01:40 AM"),
    InboxDetails(image: "user6.jpg", name: "Martin Luther", msg: "Bro Dinner", time: "04:40 PM", msgNo: "3"),
    InboxDetails(image: "user7.jpeg", name: "Steve Smith", msg: "On my way!", time: "09:30 AM"),

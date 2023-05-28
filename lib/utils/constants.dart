@@ -9,4 +9,5 @@ class Constants{
   static final orientation = mediaQueryData.orientation;
   static final isPortrait = Orientation.portrait;
 
+  static final keyboardSize = mediaQueryData.viewInsets.bottom;
 }

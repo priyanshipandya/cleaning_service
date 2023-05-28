@@ -1,7 +1,8 @@
+import 'dart:async';
+
 class ChatDetails{
   String msg;
   bool isSendByMe;
-
   ChatDetails(this.msg, this.isSendByMe);
 }
 

@@ -28,7 +28,7 @@ class _InboxState extends State<Inbox> {
         length: 2,
         child: Column(
           children: [
-            TabBar(indicatorColor: cColor.cOrange, tabs: [
+            TabBar(indicatorColor: Colors.black, tabs: [
               Tab(
                 height: 60,
                 child: Text(
@@ -55,40 +55,43 @@ class _InboxState extends State<Inbox> {
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(0, 1),
-                      blurRadius: 2,
-                      spreadRadius: 5,
+                      // blurRadius: 2,
+                      spreadRadius: 2,
                       color: Colors.grey.withOpacity(0.1),
                     ),
                   ],
                 ),
-                child: TextField(
-                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                  onChanged: (value) {
-                    filterlist.clear();
-                    for (int i = 0; i < userDetails.length; i++) {
-                      if (userDetails[i]
-                          .name
-                          .toLowerCase()
-                          .contains(value.toLowerCase())) {
-                        filterlist.add(userDetails[i]);
-                        print(userDetails[i].name);
-                        print(filterlist.isEmpty);
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: TextField(
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                    onChanged: (value) {
+                      filterlist.clear();
+                      for (int i = 0; i < userDetails.length; i++) {
+                        if (userDetails[i]
+                            .name
+                            .toLowerCase()
+                            .contains(value.toLowerCase().trim())) {
+                          filterlist.add(userDetails[i]);
+                          print(userDetails[i].name);
+                          print(filterlist.isEmpty);
+                        }
+                        setState(() {});
                       }
-                      setState(() {});
-                    }
-                    if (filterlist.isEmpty) {
-                      Center(
-                        child: Text(
-                          "No User Found",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      );
-                    }
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Search",
-                    isDense: true,
-                    border: InputBorder.none,
+                      if (filterlist.isEmpty) {
+                        Center(
+                          child: Text(
+                            "No User Found",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        );
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Search",
+                      // isDense: true,
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ),
@@ -117,7 +120,7 @@ class _InboxState extends State<Inbox> {
                             ),
                             subtitle: Text(
                               userDetails[index].msg,
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(fontSize: 16, height: 1.5),
                             ),
                             trailing: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -128,7 +131,7 @@ class _InboxState extends State<Inbox> {
                                   CircleAvatar(
                                     radius: 10,
                                     backgroundColor: Colors.black,
-                                    child: Text(userDetails[index].msgNo!),
+                                    child: Text(userDetails[index].msgNo!, style: TextStyle(color: Colors.white),),
                                   ),
                               ],
                             ),
@@ -162,7 +165,7 @@ class _InboxState extends State<Inbox> {
                             ),
                             subtitle: Text(
                               userDetails[index].msg,
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(fontSize: 16, height: 1.5),
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,

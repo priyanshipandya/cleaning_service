@@ -1,5 +1,6 @@
 import 'package:cleaning_service/Screens/ordered.dart';
 import 'package:cleaning_service/Screens/payment.dart';
+import 'package:cleaning_service/Screens/profile.dart';
 import 'package:cleaning_service/components/cardtile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,7 +17,7 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
-  List pages = [HomePage(), Inbox(), Payment()];
+  List pages = [HomePage(), Inbox(), Profile()];
   int selectedIndex = 0;
 
   @override
@@ -28,6 +29,7 @@ class _IndexState extends State<Index> {
         currentIndex: selectedIndex,
         showUnselectedLabels: false,
         showSelectedLabels: false,
+
         onTap: (value) {
           setState(() {
             selectedIndex = value;
@@ -36,7 +38,7 @@ class _IndexState extends State<Index> {
         items: [
           BottomNavigationBarItem(
               icon: Image.asset(
-                "asset/icons/home.png",
+                selectedIndex == 0 ? "asset/icons/home-filled.png" :"asset/icons/home.png",
                 height: 25,
                 width: 25,
                 color: Colors.black,
@@ -44,18 +46,18 @@ class _IndexState extends State<Index> {
               label: "home"),
           BottomNavigationBarItem(
               icon: Image.asset(
-                "asset/icons/inbox.png",
+                selectedIndex == 1 ? "asset/icons/inbox-filled.png" : "asset/icons/inbox.png",
                 height: 25,
                 width: 25,
               ),
               label: "Inbox"),
           BottomNavigationBarItem(
               icon: Image.asset(
-                "asset/icons/receipt.png",
+                selectedIndex == 2 ? "asset/icons/user-filled.png" : "asset/icons/user.png",
                 height: 25,
                 width: 25,
               ),
-              label: "Receipt"),
+              label: "Profile"),
           // BottomNavigationBarItem(
           //     icon: Image.asset(
           //       "asset/icons/user.png",

@@ -1,8 +1,10 @@
+import 'package:cleaning_service/Screens/payment.dart';
 import 'package:cleaning_service/utils/card_details.dart';
 import 'package:cleaning_service/utils/color.dart';
 import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../components/cardtile.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,22 +16,46 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<DropdownMenuItem> dropDownItems = [
-    const DropdownMenuItem(
-        value: "Batununggal, Indonesia", child: Text("Batununggal, Indonesia")),
-    const DropdownMenuItem(
-        value: "Batununggal, Indonesia", child: Text("Batununggal, Indonesia")),
-    const DropdownMenuItem(
-        value: "Batununggal, Indonesia", child: Text("Batununggal, Indonesia")),
-    const DropdownMenuItem(
-        value: "Batununggal, Indonesia", child: Text("Batununggal, Indonesia")),
+    DropdownMenuItem(
+        value: "Batununggal, Indonesia",
+        child: Container(
+            constraints: BoxConstraints(minWidth: 150),
+            child: Text(
+              "Batununggal, Indonesia",
+            ))),
+    DropdownMenuItem(
+        value: "Batununggal, Indonesia",
+        child: Container(
+            constraints: BoxConstraints(minWidth: 150),
+            child: Text("Batununggal, Indonesia"))),
+    DropdownMenuItem(
+        value: "Batununggal, Indonesia",
+        child: Container(
+            constraints: BoxConstraints(minWidth: 150),
+            child: Text("Batununggal, Indonesia"))),
+    DropdownMenuItem(
+        value: "Batununggal, Indonesia",
+        child: Container(
+            constraints: BoxConstraints(minWidth: 150),
+            child: Text("Batununggal, Indonesia"))),
   ];
 
+  List<CardDetails> filteredService = [];
   String? selectedItem;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    cardDetails.forEach((key, value) {
+      cardDetailsList.add(CardDetails(key, value));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -50,6 +76,7 @@ class _HomePageState extends State<HomePage> {
                   dense: true,
                   subtitle: DropdownButtonHideUnderline(
                     child: DropdownButton(
+                      // padding: EdgeInsets.only(right: 20),
                       icon: Icon(
                         Icons.keyboard_arrow_down_outlined,
                         color: cColor.cOrange,
@@ -77,11 +104,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   trailing: CircleAvatar(
-                    radius: 20,
+                    radius: 22,
                     backgroundColor: cColor.cOrange,
                     child: SvgPicture.asset(
                       "asset/vectors/avatar.svg",
-                      height: 40,
+                      height: 44,
                     ),
                   ),
                 ),
@@ -118,6 +145,22 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 17.0),
                 child: TextField(
+                  onChanged: (value) {
+                    filteredService.clear();
+                    for (int i = 0; i < cardDetailsList.length; i++) {
+                      if (cardDetailsList[i]
+                              .title
+                              .toLowerCase()
+                              .contains(value.toLowerCase().trim()) ||
+                          cardDetailsList[i]
+                              .work
+                              .toLowerCase()
+                              .contains(value.toLowerCase().trim())) {
+                        filteredService.add(cardDetailsList[i]);
+                      }
+                    }
+                    setState(() {});
+                  },
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
@@ -128,15 +171,20 @@ class _HomePageState extends State<HomePage> {
                     filled: true,
                     fillColor: cColor.cWhite,
                     suffixIcon: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 12),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.only(left: 10, right: 10),
                       decoration: const BoxDecoration(
-                        border: Border(left: BorderSide(color: Colors.black38)),
+                        border: Border(
+                          left: BorderSide(color: Colors.black38, width: 2),
+                        ),
                       ),
-                      height: 15,
+                      height: 10,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 12.0),
                         child: Image.asset(
                           "asset/icons/sort.png",
+                          height: 10,
+                          width: 30,
                         ),
                       ),
                     ),
@@ -172,36 +220,64 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    Text(
-                      "See more",
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: cColor.cOrange,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline),
-                    ),
                   ],
                 ),
               ),
               const SizedBox(
                 height: 25,
               ),
-              SizedBox(
-                height: Constants.orientation == Constants.isPortrait
-                    ? Constants.height * 0.35
-                    : Constants.height * 0.6,
-                child: Padding(
+              if (filteredService == null || filteredService.isEmpty)
+                Padding(
                   padding: const EdgeInsets.only(left: 10.0),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => CardTile(
-                      index: index,
+                  child: InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Payment(),
+                      ),
                     ),
-                    itemCount: CardDetails.cardDetails.length,
+                    child: SizedBox(
+                      height: Constants.orientation == Constants.isPortrait
+                          ? Constants.height * 0.35
+                          : Constants.height * 0.6,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => CardTile(
+                          // index: index,
+                          cardDesc: cardDetailsList[index],
+                        ),
+                        itemCount: cardDetailsList.length,
+                      ),
+                    ),
+                  ),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: SizedBox(
+                    height: Constants.orientation == Constants.isPortrait
+                        ? Constants.height * 0.35
+                        : Constants.height * 0.6,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Payment(),
+                              ));
+                        },
+                        child: CardTile(
+                          cardDesc: filteredService[index],
+                        ),
+                      ),
+                      itemCount: filteredService.length,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

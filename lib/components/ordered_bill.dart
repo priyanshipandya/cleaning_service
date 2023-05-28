@@ -1,16 +1,23 @@
+import 'package:cleaning_service/components/selectable_services.dart';
 import 'package:cleaning_service/utils/color.dart';
 import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/selected_service.dart';
 
 class OrderBill extends StatelessWidget {
-  const OrderBill({Key? key}) : super(key: key);
+  OrderBill({Key? key}) : super(key: key);
+  List items = ["Laundry", "Repairing", "Electrical"];
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
-        height: Constants.orientation == Constants.isPortrait ? Constants.height * 0.35 : Constants.height * 0.80,
+        height: Constants.orientation == Constants.isPortrait
+            ? Constants.height * 0.35
+            : Constants.height * 0.80,
         decoration: BoxDecoration(
           color: cColor.cWhite,
           borderRadius: BorderRadius.circular(20),
@@ -56,7 +63,6 @@ class OrderBill extends StatelessWidget {
                 height: 30,
               ),
               Container(
-                margin: EdgeInsets.only(left: 15),
                 child: Column(
                   children: [
                     Align(
@@ -70,8 +76,9 @@ class OrderBill extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: [
+                    ...List.generate(
+                      items.length,
+                      (index) => Row(children: [
                         Padding(
                           padding: EdgeInsets.only(top: 3, right: 8),
                           child: CircleAvatar(
@@ -79,49 +86,8 @@ class OrderBill extends StatelessWidget {
                             backgroundColor: cColor.cOrange,
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Laundry",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 3, right: 8),
-                          child: CircleAvatar(
-                            radius: 4,
-                            backgroundColor: cColor.cOrange,
-                          ),
-                        ),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Repairing",
-                              style: TextStyle(fontSize: 16),
-                            )),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 3, right: 8),
-                          child: CircleAvatar(
-                            radius: 4,
-                            backgroundColor: cColor.cOrange,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Electrical",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
+                        Text("${items[index]}", style: TextStyle(fontSize: 16),),
+                      ]),
                     ),
                     SizedBox(
                       height: 25,
@@ -135,8 +101,7 @@ class OrderBill extends StatelessWidget {
                           hintText: "Enter promo code(optional)",
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: cColor.cOrange),
-                            borderRadius: BorderRadius.circular(20)
-                            ,
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                         onTapOutside: (event) =>
