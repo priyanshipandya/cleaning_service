@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cleaning_service/utils/color.dart';
 import 'package:cleaning_service/utils/constants.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../utils/chat_details.dart';
@@ -21,6 +22,8 @@ class _ChatRoomState extends State<ChatRoom> {
   ScrollController scrollController = ScrollController();
   FocusNode textFieldFocus = FocusNode();
   bool isKeyboardVisible = false;
+
+  // GlobalKey _popupKey = GlobalKey();
 
   @override
   void initState() {
@@ -44,6 +47,8 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
+    String? copiedData;
+
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 5,
@@ -102,11 +107,53 @@ class _ChatRoomState extends State<ChatRoom> {
             controller: scrollController,
             itemCount: myChats.length,
             itemBuilder: (context, index) {
-              return InkWell(
-                onLongPress: () {
-                  setState(() {
-                    myChats.removeAt(index);
-                  });
+              return GestureDetector(
+                onTapDown: (TapDownDetails details) {
+                  print("${details.globalPosition.dx}");
+                  print("${details.globalPosition.dy}");
+                  print("${details.localPosition.dx}");
+                  print("${details.localPosition.dy}");
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(
+                        details.globalPosition.dx,
+                        details.globalPosition.dy + 25,
+                        details.globalPosition.dx,
+                        0),
+                    items: [
+                      PopupMenuItem(
+                          child: Row(
+                            children: [
+                              Text("Delete"),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(Icons.delete),
+                            ],
+                          ),
+                          onTap: () {
+                            setState(() {
+                              myChats.removeAt(index);
+                            });
+                          }),
+                      PopupMenuItem(
+                        child: Row(
+                          children: [
+                            Text("Copy"),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Icon(Icons.copy),
+                          ],
+                        ),
+                        onTap: () {
+                          copiedData = myChats[index].msg;
+                          FlutterClipboard.copy(copiedData!);
+                          print("data copied");
+                        },
+                      ),
+                    ],
+                  );
                 },
                 child: myChats[index].isSendByMe
                     ? Align(
@@ -123,7 +170,9 @@ class _ChatRoomState extends State<ChatRoom> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              "${myChats[index].msg}",
+                              copiedData == null
+                                  ? "${myChats[index].msg}"
+                                  : "${FlutterClipboard.paste()}",
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
@@ -162,7 +211,10 @@ class _ChatRoomState extends State<ChatRoom> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: Constants.orientation == Constants.isPortrait ? 10.0 : 8, horizontal: 10),
+          padding: EdgeInsets.symmetric(
+              vertical:
+                  Constants.orientation == Constants.isPortrait ? 10.0 : 8,
+              horizontal: 10),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: TextField(
@@ -190,14 +242,15 @@ class _ChatRoomState extends State<ChatRoom> {
                               ChatDetails(myText, false),
                             );
                             scrollController.animateTo(
-                                scrollController.position.maxScrollExtent,
+                                scrollController.position.maxScrollExtent + 50,
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.bounceIn);
                             ctr.text = "";
                           },
                         );
                         // print(myChats.last.msg);
-                      };
+                      }
+                      ;
                     }),
                 // border: OutlineInputBorder(
                 //   borderRadius: BorderRadius.circular(20),
@@ -220,7 +273,7 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   Future<String> getData(int index) async {
-    if (index > myChats.length - 2) {
+    if (index >= myChats.length - 1) {
       await Future.delayed(
         Duration(milliseconds: 1000),
       );

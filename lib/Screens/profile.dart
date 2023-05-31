@@ -55,7 +55,7 @@ class Profile extends StatelessWidget {
               height: 20,
             ),
             Container(
-              width: Constants.orientation == Constants.isPortrait ?  300 : 700,
+              width: Constants.orientation == Constants.isPortrait ?  320 : 700,
               color: Colors.white,
               child: ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
@@ -78,7 +78,7 @@ class Profile extends StatelessWidget {
               height: 20,
             ),
             Container(
-              width: Constants.orientation == Constants.isPortrait ?  300 : 700,
+              width: Constants.orientation == Constants.isPortrait ?  320 : 700,
               color: Colors.white,
               child: ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
