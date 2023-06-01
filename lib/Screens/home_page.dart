@@ -219,27 +219,21 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   child: SizedBox(
-                    height: Constants.orientation == Constants.isPortrait
-                        ? Constants.height * 0.35
-                        : Constants.height * 0.6,
-                    child: filteredService.isNotEmpty
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) => CardTile(
-                              cardDesc:
-                                  textEditingController.text.trim().isEmpty
-                                      ? cardDetailsList[index]
-                                      : filteredService[index],
-                            ),
-                            itemCount: textEditingController.text.trim().isEmpty
-                                ? cardDetailsList.length
-                                : filteredService.length,
-                          )
-                        : Center(
-                            child: Text("No Services found", style: TextStyle(fontSize: 17),),
-                          ),
-                  ),
+                      height: Constants.orientation == Constants.isPortrait
+                          ? Constants.height * 0.35
+                          : Constants.height * 0.6,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => CardTile(
+                          cardDesc: textEditingController.text.trim().isEmpty
+                              ? cardDetailsList[index]
+                              : filteredService[index],
+                        ),
+                        itemCount: textEditingController.text.trim().isEmpty
+                            ? cardDetailsList.length
+                            : filteredService.length,
+                      ),),
                 ),
               ),
             ],
