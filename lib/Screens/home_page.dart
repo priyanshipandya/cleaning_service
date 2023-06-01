@@ -4,7 +4,6 @@ import 'package:cleaning_service/utils/color.dart';
 import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../components/cardtile.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,30 +14,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<DropdownMenuItem> dropDownItems = [
-    DropdownMenuItem(
-        value: "Batununggal, Indonesia",
-        child: Container(
-            constraints: BoxConstraints(minWidth: 150),
-            child: Text(
-              "Batununggal, Indonesia",
-            ))),
-    DropdownMenuItem(
-        value: "Batununggal, Indonesia",
-        child: Container(
-            constraints: BoxConstraints(minWidth: 150),
-            child: Text("Batununggal, Indonesia"))),
-    DropdownMenuItem(
-        value: "Batununggal, Indonesia",
-        child: Container(
-            constraints: BoxConstraints(minWidth: 150),
-            child: Text("Batununggal, Indonesia"))),
-    DropdownMenuItem(
-        value: "Batununggal, Indonesia",
-        child: Container(
-            constraints: BoxConstraints(minWidth: 150),
-            child: Text("Batununggal, Indonesia"))),
-  ];
+  List<DropdownMenuItem<String>> dropDownItems = [
+    "Batununggal, Indonesia",
+    "Maharashtra, India",
+    "Bangalore, Karnataka"
+  ].map((item) => DropdownMenuItem(child: Text(item), value: item)).toList();
+
+  TextEditingController textEditingController = TextEditingController();
 
   List<CardDetails> filteredService = [];
   String? selectedItem;
@@ -76,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                   dense: true,
                   subtitle: DropdownButtonHideUnderline(
                     child: DropdownButton(
-                      // padding: EdgeInsets.only(right: 20),
+                      value: selectedItem,
                       icon: Icon(
                         Icons.keyboard_arrow_down_outlined,
                         color: cColor.cOrange,
@@ -90,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                       items: dropDownItems,
                       onChanged: (newValue) {
                         setState(() {
-                          selectedItem = newValue;
+                          selectedItem = newValue.toString();
                         });
                       },
                     ),
@@ -145,6 +127,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 17.0),
                 child: TextField(
+                  controller: textEditingController,
                   onChanged: (value) {
                     filteredService.clear();
                     for (int i = 0; i < cardDetailsList.length; i++) {
@@ -226,58 +209,39 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 25,
               ),
-              if (filteredService == null || filteredService.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: InkWell(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Payment(),
-                      ),
-                    ),
-                    child: SizedBox(
-                      height: Constants.orientation == Constants.isPortrait
-                          ? Constants.height * 0.35
-                          : Constants.height * 0.6,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => CardTile(
-                          // index: index,
-                          cardDesc: cardDetailsList[index],
-                        ),
-                        itemCount: cardDetailsList.length,
-                      ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Payment(),
                     ),
                   ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
                   child: SizedBox(
                     height: Constants.orientation == Constants.isPortrait
                         ? Constants.height * 0.35
                         : Constants.height * 0.6,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Payment(),
-                              ));
-                        },
-                        child: CardTile(
-                          cardDesc: filteredService[index],
-                        ),
-                      ),
-                      itemCount: filteredService.length,
-                    ),
+                    child: filteredService.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) => CardTile(
+                              cardDesc:
+                                  textEditingController.text.trim().isEmpty
+                                      ? cardDetailsList[index]
+                                      : filteredService[index],
+                            ),
+                            itemCount: textEditingController.text.trim().isEmpty
+                                ? cardDetailsList.length
+                                : filteredService.length,
+                          )
+                        : Center(
+                            child: Text("No Services found", style: TextStyle(fontSize: 17),),
+                          ),
                   ),
                 ),
+              ),
             ],
           ),
         ),

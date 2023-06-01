@@ -1,7 +1,5 @@
-import 'package:cleaning_service/utils/color.dart';
 import 'package:cleaning_service/utils/constants.dart';
 import 'package:flutter/material.dart';
-
 import '../utils/inbox_details.dart';
 import 'chat.dart';
 
@@ -17,6 +15,7 @@ class _InboxState extends State<Inbox> {
 
   @override
   void initState() {
+    filterlist = userDetails;
     super.initState();
   }
 
@@ -66,18 +65,16 @@ class _InboxState extends State<Inbox> {
                   child: TextField(
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     onChanged: (value) {
-                      filterlist.clear();
+                      filterlist = [];
                       for (int i = 0; i < userDetails.length; i++) {
                         if (userDetails[i]
                             .name
                             .toLowerCase()
                             .contains(value.toLowerCase().trim())) {
                           filterlist.add(userDetails[i]);
-                          print(userDetails[i].name);
-                          print(filterlist.isEmpty);
                         }
-                        setState(() {});
                       }
+                      setState(() {});
                       if (filterlist.isEmpty) {
                         Center(
                           child: Text(
@@ -96,176 +93,101 @@ class _InboxState extends State<Inbox> {
                 ),
               ),
             ),
-            filterlist.isEmpty
-                ? SizedBox(
-                    height: Constants.height - 250,
-                    child: TabBarView(
-                      children: [
-                        ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: userDetails.length,
-                          itemBuilder: (context, index) => ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              foregroundImage: AssetImage(
-                                  "asset/users/${userDetails[index].image}"),
-                            ),
-                            title: Text(
-                              userDetails[index].name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                              ),
-                            ),
-                            subtitle: Text(
-                              userDetails[index].msg,
-                              style: TextStyle(fontSize: 16, height: 1.5),
-                            ),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(userDetails[index].time),
-                                if (userDetails[index].msgNo != null)
-                                  CircleAvatar(
-                                    radius: 10,
-                                    backgroundColor: Colors.black,
-                                    child: Text(userDetails[index].msgNo!, style: TextStyle(color: Colors.white),),
-                                  ),
-                              ],
-                            ),
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ChatRoom(
-                                      image: userDetails[index].image,
-                                      name: userDetails[index].name),
-                                ),
-                              );
-                            },
+            SizedBox(
+              height: Constants.height - 250,
+              child: TabBarView(
+                children: [
+                  if (filterlist.isEmpty)
+                    Center(
+                        child: Text("No User found",
+                            style: TextStyle(fontSize: 18)))
+                  else
+                    ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: filterlist.length,
+                      itemBuilder: (context, index) => ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          foregroundImage: AssetImage(
+                              "asset/users/${filterlist[index].image}"),
+                        ),
+                        title: Text(
+                          filterlist[index].name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
                           ),
                         ),
-                        ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: userDetails.length,
-                          itemBuilder: (context, index) => ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              foregroundImage: AssetImage(
-                                  "asset/users/${userDetails[index].image}"),
-                            ),
-                            title: Text(
-                              userDetails[index].name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                              ),
-                            ),
-                            subtitle: Text(
-                              userDetails[index].msg,
-                              style: TextStyle(fontSize: 16, height: 1.5),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.video_call, color: Colors.black),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Icon(Icons.call, color: Colors.black),
-                              ],
-                            ),
-                          ),
+                        subtitle: Text(
+                          filterlist[index].msg,
+                          style: TextStyle(fontSize: 17),
                         ),
-                      ],
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(filterlist[index].time),
+                            if (filterlist[index].msgNo != null)
+                              CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.black,
+                                child: Text(filterlist[index].msgNo!),
+                              ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ChatRoom(
+                                  image: filterlist[index].image,
+                                  name: filterlist[index].name),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  )
-                : SizedBox(
-                    height: Constants.height - 250,
-                    child: TabBarView(
-                      children: [
-                        ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: filterlist.length,
-                          itemBuilder: (context, index) => ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              foregroundImage: AssetImage(
-                                  "asset/users/${filterlist[index].image}"),
-                            ),
-                            title: Text(
-                              filterlist[index].name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20,
-                              ),
-                            ),
-                            subtitle: Text(
-                              filterlist[index].msg,
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(filterlist[index].time),
-                                if (filterlist[index].msgNo != null)
-                                  CircleAvatar(
-                                    radius: 10,
-                                    backgroundColor: Colors.black,
-                                    child: Text(filterlist[index].msgNo!),
-                                  ),
-                              ],
-                            ),
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ChatRoom(
-                                      image: filterlist[index].image,
-                                      name: filterlist[index].name),
-                                ),
-                              );
-                            },
+                  if (filterlist.isEmpty)
+                    Center(
+                        child: Text("No User found",
+                            style: TextStyle(fontSize: 17)))
+                  else
+                    ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: filterlist.length,
+                      itemBuilder: (context, index) => ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          foregroundImage: AssetImage(
+                              "asset/users/${filterlist[index].image}"),
+                        ),
+                        title: Text(
+                          filterlist[index].name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
                           ),
                         ),
-                        ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: filterlist.length,
-                          itemBuilder: (context, index) => ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              foregroundImage: AssetImage(
-                                  "asset/users/${filterlist[index].image}"),
-                            ),
-                            title: Text(
-                              filterlist[index].name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20,
-                              ),
-                            ),
-                            subtitle: Text(
-                              filterlist[index].msg,
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.video_call, color: Colors.black),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Icon(Icons.call, color: Colors.black),
-                              ],
-                            ),
-                          ),
+                        subtitle: Text(
+                          filterlist[index].msg,
+                          style: TextStyle(fontSize: 17),
                         ),
-                      ],
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.video_call, color: Colors.black),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Icon(Icons.call, color: Colors.black),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                ],
+              ),
+            ),
           ],
         ),
       )),
